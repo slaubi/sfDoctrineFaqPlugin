@@ -1,0 +1,21 @@
+sfFaqCategory:
+  category_1:
+    name: category 1
+  category_2:
+    name: category 2
+
+sfFaqFaq:
+  question_1:
+    question:       Question 1 ?
+    answer:         Answer 1
+    Category:       category_1
+    
+  question_2:
+    question:       Question 2 ?
+    answer:         Answer 2
+    Category:       category_2
+
+  question_3:
+    question:       Question 3 ?
+    answer:         Answer 3
+    Category:       category_2

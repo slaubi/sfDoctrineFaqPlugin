@@ -1,0 +1,130 @@
+= sfDoctrineFaqPlugin - Bulletin Board / FAQ for Symfony =
+
+== Overview ==
+
+This plugin is a fork for Doctrine of the sfFaqPlugin
+http://www.symfony-project.org/plugins/sfFaqPlugin
+
+It allows you to embed a FAQ module within your symfony application with the following features :
+
+ * Questions are grouped into Categories
+ * BackEnd Modules to manage categories and questions
+ * A category can be activated or desactivated
+ * The front can be full JS (no reload) OR one click reload the page with a good URL for search engine optimization
+ * i18n ready
+
+
+== Requirements ==
+
+ * Prototype (for FULL JS version)
+
+== Installation ==
+ 
+Get the source from github into your plugins-folder:
+
+{{{
+$ git clone http://github.com/slaubi/sfDoctrineFaqPlugin
+}}}
+
+Rebuild the model, generate the SQL code for the new tables and insert it into your database:
+{{{
+$ ./symfony doctrine:build --all
+}}}
+
+Clear the cache to enable autoloading to find new classes:
+{{{
+$ ./symfony cc
+}}}
+
+For default design, assets(plugin-bundled css and image file) should be properly set under the /web directory. symfony command for this is provided.
+
+{{{
+$ ./symfony plugin:publish-assets
+}}}
+
+or create a symlink for the webfolder by hand.
+{{{
+$ ln -s plugins/sfDoctrineFaqPlugin/web web/sfDoctrineFaqPlugin
+}}}
+
+
+You can load included fixtures to start using FAQ with test data.
+{{{
+$ cp plugins/sfDoctrineFaqPlugin/data/fixtures/fixtures.yml.example data/fixtures/sf_doctrine_faq.yml
+
+$ ./symfony doctrine:data-load --env=frontend
+}}}
+
+== Configuration ==
+
+=== plugin activation ===
+
+You need to add this plugin name in the setup() method in config/ProjectConfiguration.class.php
+
+{{{
+  public function setup()
+  {
+    $this->enablePlugins(array('sfDoctrineFaqPlugin'));
+  }
+}}}
+
+Or, if your setup() uses enableAllPluginsExcept(), which is to tell what plugins you do not use, make sure the 'sfFaqPlugin' is not in the array.
+
+=== setting.yml ===
+
+Enable the new `sfFaq` module in your application, within `settings.yml` file.
+{{{
+// in myproject/apps/frontend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfFaq]
+
+// in myproject/apps/backend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfFaqAdminCategories, sfFaqAdminFaq]
+}}}
+
+Start using the plugin by browsing front-end module's default page:
+{{{ 
+// FrontEnd
+http://myproject/sfFaq
+
+// BackEnd
+http://myproject/backend.php/sfFaqAdminCategories
+http://myproject/backend.php/sfFaqAdminFaq
+}}}
+
+=== app.yml ===
+
+Plugin features can be altered by configuration. To do so, check the plugin app.yml and copy the needed lines to your application's `app.yml`:
+
+=== Routing rules ===
+
+The plugin doesn't come with any routing rule. However, you can add some of your own to make the URLs look nicer. An example of set of rules you find in the config folder.
+
+
+=== view.yml ===
+
+When using FULL JS version, you need to set that you are going to use prototype.js libraries on view.yml, which will be reflected to the generated page header.
+
+{{{
+// in myproject/apps/frontend/config/view.yml
+all:
+  stylesheets: [/sfDoctrineFaqPlugin/css/sf_faq, myCustomStylesheet]
+
+  javascripts: [/sf/prototype/js/prototype, /sf/prototype/js/builder, /sf/prototype/js/effects]
+}}}
+
+
+== Credits ==
+
+	This plugin was developed by [http://jonathan.demoutiez.net Jonathan Demoutiez] during my job in [http://www.webpulser.com Webpulser] : a french Web application development studio settled in Lille, northen France.
+
+	If you want to contribute, contact me.
+
+	Modification for symfony 1.2 is done by [http://asiajin.com/blog/ Akky Akimoto], Tokyo, Japan.
+
+
+  Modification for symfony 1.4 and migration to Doctrine is done by slaubi
+  http://github.com/slaubi/sfDoctrineFaqPlugin
