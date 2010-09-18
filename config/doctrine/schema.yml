@@ -48,4 +48,4 @@ sfFaqFaq:
     category_id:   { type: bigint(20) }
 
   relations:
-    sfFaqCategory: { onDelete: CASCADE, local: category_id, foreign: id }
+    sfFaqCategory: { onDelete: CASCADE, local: category_id, foreign: id, alias: Category }
