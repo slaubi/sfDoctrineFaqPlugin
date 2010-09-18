@@ -3,8 +3,7 @@
 /**
  * Faq module
  *
- * The front can be full JS nothing reload OR one click reload the page with a good URL for the referencement
- * cf : README
+ * just simple listing
  *
  * @package sfDoctrineFaqPlugin
  * @author Jonathan Démoutiez <jonathan@demoutiez.net>
@@ -14,30 +13,21 @@ class BasesfFaqActions extends sfActions
 {
   public function preExecute()
   {
-    if (sfConfig::get('app_sfDoctrineFaqPlugin_js', false) && $this->getActionName() != 'indexJs') 
-    {
-      $this->forward('sfFaq', 'indexJs');
-    }
-    if (!sfConfig::get('app_sfDoctrineFaqPlugin_js', false) && $this->getActionName() != 'index') 
-    {
-      $this->forward('sfFaq', 'index');
-    }
-
     $this->initList();
   }
 
   public function executeIndex() 
   {
-    if ($this->hasRequestParameter('faq_id')) 
+    if ($this->hasRequestParameter('faq_slug'))
     {
-      $this->setVar('selectedFaq', Doctrine::getTable('sfFaqFaq')->find($this->getRequestParameter('faq_id')));
+      $this->selectedFaq = Doctrine::getTable('sfFaqFaq')->findOneBySlug($this->getRequestParameter('faq_slug'));
     }
-
+    
     if (!isset($this->selectedFaq) && !$this->selectedFaq) 
     {
-      if ($this->hasRequestParameter('category_id'))
+      if ($this->hasRequestParameter('category_slug'))
       {
-	$this->setVar('selectedCategory', Doctrine::getTable('sfFaqCategory')->find($this->getRequestParameter('category_id')));
+	$this->selectedCategory = Doctrine::getTable('sfFaqCategory')->findOneBySlug($this->getRequestParameter('category_slug'));
 	$this->defaultQuestionSelection();
       }
       else
@@ -47,14 +37,10 @@ class BasesfFaqActions extends sfActions
     }
     else 
     {
-      $this->setVar('selectedCategory', $this->selectedFaq->getsfFaqCategory());
+      $this->selectedCategory = $this->selectedFaq->getCategory();
     }
   }
 
-  public function executeIndexJs() 
-  {
-    $this->defaultSelection();
-  }
 	
   /**
    * Private methods
@@ -63,7 +49,7 @@ class BasesfFaqActions extends sfActions
    */
   private function initList()
   {
-    $this->setVar('categoriesList', Doctrine::getTable('sfFaqCategory')->retrieveAll());
+    $this->categoriesList = Doctrine::getTable('sfFaqCategory')->retrieveAll();
   }
 	
   private function defaultSelection()
@@ -74,31 +60,27 @@ class BasesfFaqActions extends sfActions
 	
   private function defaultCategorySelection()
   {
-    if (sfConfig::get('app_sfDoctrineFaqPlugin_first_category_by_default', false) && !isset($this->selectedCategory) && !$this->selectedCategory) 
+    $this->selectedCategory = NULL;
+    $this->selectedFaq      = NULL;
+
+    if (sfConfig::get('app_sf_doctrine_faq_plugin_first_category_by_default', false) && !isset($this->selectedCategory) && !$this->selectedCategory)
     {
-      $this->setVar('selectedCategory', Doctrine::getTable('sfFaqCategory')->retrieveFirst());
+      $this->selectedCategory = Doctrine::getTable('sfFaqCategory')->retrieveFirst();
       $this->defaultQuestionSelection();
-    }
-    else
-    {
-      $this->setVar('selectedCategory', NULL);
-      $this->setVar('selectedFaq', NULL);
     }
   }
 	
   private function defaultQuestionSelection()
   {
-    if (sfConfig::get('app_sfDoctrineFaqPlugin_first_question_by_default', false) && $this->selectedCategory)
+    $this->selectedFaq = NULL;
+
+    if (sfConfig::get('app_sf_doctrine_faq_plugin_first_question_by_default', false) && $this->selectedCategory)
     {
       $selectedFaqs = $this->selectedCategory->getsfFaqFaqs();
       if (is_array($selectedFaqs)) 
       {
-	$this->setVar('selectedFaq', array_shift($selectedFaqs));
+	$this->selectedFaq = array_shift($selectedFaqs);
       }
-    }
-    else 
-    {
-      $this->setVar('selectedFaq', NULL);
     }
   }
 }

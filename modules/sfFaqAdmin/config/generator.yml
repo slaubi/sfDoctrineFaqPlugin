@@ -1,7 +1,7 @@
 generator:
   class: sfDoctrineGenerator
   param:
-    model_class:           sfFaqCategory
+    model_class:           sfFaqFaq
     theme:                 admin
     non_verbose_templates: true
     with_show:             false
@@ -9,17 +9,13 @@ generator:
     plural:                ~
     route_prefix:          sf_faq_faq
     with_doctrine_route:   true
+    actions_base_class:    sfActions
 
     config:
       actions: ~
       fields:  ~
-      list:
-        title: Categories FAQ List
-        display: [=id, name, activate]
-        batch_actions: {}
+      list:    ~
       filter:  ~
       form:    ~
-      edit:
-        title: Edition of category "%%name%%"
-        display: [created_at, name, activate]
+      edit:    ~
       new:     ~

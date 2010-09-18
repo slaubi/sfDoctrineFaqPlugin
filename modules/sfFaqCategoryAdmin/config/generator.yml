@@ -1,24 +1,21 @@
 generator:
   class: sfDoctrineGenerator
   param:
-    model_class:           sfFaqFaq
+    model_class:           sfFaqCategory
     theme:                 admin
     non_verbose_templates: true
     with_show:             false
     singular:              ~
     plural:                ~
-    route_prefix:          sf_faq_faq
+    route_prefix:          sf_faq_category
     with_doctrine_route:   true
+    actions_base_class:    sfActions
 
     config:
       actions: ~
       fields:  ~
-      list:
-        title: FAQ List
-        display: [question, answer, =category_id]
+      list:    ~
       filter:  ~
       form:    ~
-      edit:
-        title: Edition of question "%%question%%"
-        display: [created_at, question, answer, =category_id]
+      edit:    ~
       new:     ~
