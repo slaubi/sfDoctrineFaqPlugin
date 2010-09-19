@@ -104,11 +104,7 @@ The template is very simple to allow you all wished and needed adaptions. It is 
 
 == Credits ==
 
-	This plugin was developed by [http://jonathan.demoutiez.net Jonathan Demoutiez] during my job in [http://www.webpulser.com Webpulser] : a french Web application development studio settled in Lille, northen France.
-
-	If you want to contribute, contact me.
-
-	Modification for symfony 1.2 is done by [http://asiajin.com/blog/ Akky Akimoto], Tokyo, Japan.
+	The propel version of this plugin was developed by [http://jonathan.demoutiez.net Jonathan Demoutiez] and [http://asiajin.com/blog/ Akky Akimoto], Tokyo, Japan.
 
 
   Modification for symfony 1.4 and migration to Doctrine is done by slaubi
